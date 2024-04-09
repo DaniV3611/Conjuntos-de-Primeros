@@ -82,12 +82,21 @@ def calcularPrimero(simbolo_no_terminal, reglas):
 
 def calcularPrimeros(reglas):
 
+	conjunto_primeros = {}
+
 	for no_terminal in list(reglas.keys()):
+		conjunto_primeros[no_terminal] = calcularPrimero(no_terminal, reglas)
+
+	return conjunto_primeros
+
+def imprimir(conjunto):
+	for no_terminal, primeros in conjunto.items():
 		print(f"Primeros de {no_terminal}")
-		print(calcularPrimero(no_terminal, reglas))
+		print(primeros)
 
 archivo = leerArchivo()
 
 reglas = leerGramatica(archivo)
 
-calcularPrimeros(reglas)
+primeros = calcularPrimeros(reglas)
+imprimir(primeros)
