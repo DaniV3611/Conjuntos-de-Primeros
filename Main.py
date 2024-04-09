@@ -69,6 +69,12 @@ def calcularPrimero(simbolo_no_terminal, reglas):
 		else:
 			if regla[0] != simbolo_no_terminal:
 				for primero in calcularPrimero(regla[0], reglas):
+					if primero == '/epsilon':
+						if len(regla) == 1:
+							if primero not in primeros:
+								primeros.append(primero)
+						else:
+							continue
 					if primero not in primeros:
 						primeros.append(primero)
 

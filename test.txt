@@ -1,6 +1,7 @@
 A -> B C
-A -> bad
-B -> big C boss
-B -> bet
+A -> ant A all
+B -> big C
+B -> bus A boss
+B -> 
 C -> cat
 C -> cow
