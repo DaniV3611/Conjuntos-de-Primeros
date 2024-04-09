@@ -19,8 +19,7 @@ def leerArchivo():
 
 def leerGramatica (archivo):
 
-	simbolos_no_terminales = []
-	reglas = []
+	reglas = {}
 
 	for linea in archivo:
 
@@ -42,21 +41,20 @@ def leerGramatica (archivo):
 
 		# Si hay un simbolo no terminal
 		if len(parte_izquierda) != 0:
-			# Si el simbolo no terminal no existe, se crea
-			if parte_izquierda[0] not in simbolos_no_terminales:
-				simbolos_no_terminales.append(parte_izquierda[0])
-			# Se guarda la regla actual
-			# Tupla: 
-			# * 0: Simbolo no terminal de la regla
-			# * 1: Arreglo con los simbolos terminales o no terminales
-			reglas.append((parte_izquierda[0], parte_derecha))
+			
+			# Si la clave no existe en el diccionario se inicializa
 
-	return simbolos_no_terminales, reglas
+			if parte_izquierda[0] not in reglas:
+				reglas[parte_izquierda[0]] = []
+
+			reglas[parte_izquierda[0]].append(parte_derecha)
+
+	return reglas
 
 
 archivo = leerArchivo()
 
-no_terminales, reglas = leerGramatica(archivo)
+reglas = leerGramatica(archivo)
 
 print('Reglas: ')
 print(reglas)
