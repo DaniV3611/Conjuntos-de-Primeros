@@ -1,0 +1,12 @@
+S -> A uno B C
+S -> S dos
+A -> B C D
+A -> A tres
+A -> 
+B -> D cuatro C tres
+B -> 
+C -> cinco D B
+C -> 
+D -> seis
+D -> 
+
