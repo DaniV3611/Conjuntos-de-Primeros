@@ -51,10 +51,37 @@ def leerGramatica (archivo):
 
 	return reglas
 
+def calcularPrimero(simbolo_no_terminal, reglas):
+	primeros = []
+	# Se analiza el primer simbolo de cada una de las reglas
+	for  regla in reglas.get(simbolo_no_terminal):
+
+		# print(f"Regla: {regla}")
+		
+		# Si la regla es vacia
+		if len(regla) == 0:
+			if '/epsilon' not in primeros:
+				primeros.append('/epsilon')
+		# Si el simbolo es terminal
+		elif regla[0] not in reglas:
+			if regla[0] not in primeros:
+				primeros.append(regla[0])
+		else:
+			if regla[0] != simbolo_no_terminal:
+				for primero in calcularPrimero(regla[0], reglas):
+					if primero not in primeros:
+						primeros.append(primero)
+
+	return primeros
+
+def calcularPrimeros(reglas):
+
+	for no_terminal in list(reglas.keys()):
+		print(f"Primeros de {no_terminal}")
+		print(calcularPrimero(no_terminal, reglas))
 
 archivo = leerArchivo()
 
 reglas = leerGramatica(archivo)
 
-print('Reglas: ')
-print(reglas)
+calcularPrimeros(reglas)

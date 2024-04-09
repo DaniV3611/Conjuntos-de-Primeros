@@ -1,0 +1,6 @@
+A -> B C
+A -> bad
+B -> big C boss
+B -> bet
+C -> cat
+C -> cow
