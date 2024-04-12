@@ -2,6 +2,6 @@ A -> B C
 A -> ant A all
 B -> big C
 B -> bus A boss
-B -> 
+B ->
 C -> cat
-C -> cow
+C -> cow 
