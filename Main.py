@@ -75,7 +75,7 @@ def calcularPrimero(simbolo_no_terminal, regla, reglas):
 	
 	# Se busca si este tiene mas simbolos NO terminales detras
 	for simbolo in regla:
-		if simbolo in regla:
+		if simbolo in reglas:
 			# Si el no_terminal es el simbolo del que se esta calculando se ignora
 			if simbolo != simbolo_no_terminal:
 				temp = []
@@ -109,7 +109,7 @@ def calcularPrimero(simbolo_no_terminal, regla, reglas):
 				primeros.append(simbol)
 		
 	if agregar_vacio:
-		primeros.apend('/epsilon')
+		primeros.append('/epsilon')
 	
 	return primeros
 
