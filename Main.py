@@ -135,14 +135,151 @@ def calcularPrimeros(reglas):
 
 	return conjunto_primeros, conjunto_primeros_reglas
 
-def imprimir(conjunto):
+def calcularSiguientes(reglas, conjunto_primeros):
+
+	modificado = True
+
+	conjunto_siguientes = {}
+	i = 0
+
+	for no_terminal in list(reglas.keys()):
+		conjunto_siguientes[no_terminal] = []
+		if i == 0:
+			conjunto_siguientes[no_terminal].append('$')
+		i += 1
+
+	# Bucle principal de la funcion
+	# * El bucle acaba cuando no hay mas modificaciones
+	while True:
+
+		modificaciones = 0
+
+		for no_terminal, regla_simbolo in reglas.items():
+
+			for regla in regla_simbolo:
+
+				for i in range(0, len(regla)):
+
+					# Si el simbolo es terminal
+					if regla[i] not in reglas:
+						continue
+
+					else:
+
+						# Si no esta en el ultimo elemento de la regla
+						if i != (len(regla) - 1):
+
+							# Si el siguiente es un terminal
+							if regla[i + 1] not in reglas:
+								if regla[i + 1] not in conjunto_siguientes[regla[i]]:
+									modificaciones += 1
+									conjunto_siguientes[regla[i]].append(regla[i + 1])
+
+							# Si el siguiente es un NO terminal
+							else:
+								   
+								no_terminales_seguidos = []
+
+								# Buscar si hay mas NO terminales detras
+								for j in range((i + 1), len(regla)):
+															   
+								   if regla[j] in reglas:
+								   		if regla[j] not in no_terminales_seguidos:
+								   			no_terminales_seguidos.append(regla[j])
+
+								primeros = []
+
+								for no_terminal_buscar in no_terminales_seguidos:
+									contiene_epsilon = True
+									for elemento in conjunto_primeros[no_terminal_buscar]:
+
+										if elemento not in primeros and elemento != '/epsilon':
+											primeros.append(elemento)
+
+									if '/epsilon' not in conjunto_primeros[no_terminal_buscar]:
+										contiene_epsilon = False
+
+								for primero in primeros:
+									if primero not in conjunto_siguientes[regla[i]]:
+										modificaciones += 1
+										conjunto_siguientes[regla[i]].append(primero)
+
+								if contiene_epsilon:
+
+									if (i + len(no_terminales_seguidos) + 1) >= len(regla):
+
+										temp_siguientes = conjunto_siguientes[no_terminal]
+
+										for elemento in temp_siguientes:
+											if elemento not in conjunto_siguientes[regla[i]]:
+												modificaciones += 1
+												conjunto_siguientes[regla[i]].append(elemento)
+
+									else:
+
+										if regla[(i + len(no_terminales_seguidos) + 1)] not in conjunto_siguientes[regla[i]]:
+											conjunto_siguientes[regla[i]].append(regla[(i + len(no_terminales_seguidos) + 1)])
+
+						# Si se esta calculando el ultimo elemento de la regla
+						else:
+
+							temp_siguientes = conjunto_siguientes[no_terminal]
+
+							for elemento in temp_siguientes:
+								if elemento not in conjunto_siguientes[regla[i]]:
+									modificaciones += 1
+									conjunto_siguientes[regla[i]].append(elemento)
+
+		if modificaciones == 0:
+			break
+
+	return conjunto_siguientes
+
+
+def calcularPrediccion(primeros, siguientes, primeros_reglas, reglas):
+	i = 0
+
+	conjuntos_prediccion = []
+
+	for no_terminal, regla_no_terminal in reglas.items():
+
+		for regla in regla_no_terminal:
+
+			if len(regla) == 0:
+				conjuntos_prediccion.append(siguientes[no_terminal])
+
+			else:
+				if regla[0] == no_terminal:
+					conjuntos_prediccion.append(primeros[no_terminal])
+
+				else:
+					conjuntos_prediccion.append(primeros_reglas[i])
+
+
+			i += 1
+
+	return conjuntos_prediccion
+
+
+def imprimir(conjunto, titulo):
 	for no_terminal, primeros in conjunto.items():
-		print(f"Primeros de {no_terminal}")
+		print(f"{titulo} de {no_terminal}")
 		print(primeros)
+
+def imprimirConjuntoPred(conjunto):
+	print("Conjuntos de Prediccion: ")
+	for fila in conjunto:
+		print(fila)
 
 archivo = leerArchivo()
 
 reglas = leerGramatica(archivo)
 
 primeros, conjunto_primeros_reglas = calcularPrimeros(reglas)
-imprimir(primeros)
+siguientes = calcularSiguientes(reglas, primeros)
+conjuntos_prediccion = calcularPrediccion(primeros, siguientes, conjunto_primeros_reglas, reglas)
+imprimir(primeros, 'Primeros')
+print('\n')
+imprimir(siguientes, 'Siguientes')
+print('\n')
+imprimirConjuntoPred(conjuntos_prediccion)
