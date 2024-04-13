@@ -8,7 +8,7 @@
  - Universidad Sergio Arboleda
 
  * Integrantes del grupo *
- -> Monichu Ricon
+ -> Fabian Rincon
  -> Nicolas Rodriguez Forero
  -> Daniel Velasco Gonzalez
 
