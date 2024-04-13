@@ -263,11 +263,11 @@ def calcularPrediccion(primeros, siguientes, primeros_reglas, reglas):
 
 def imprimir(conjunto, titulo):
 	for no_terminal, primeros in conjunto.items():
-		print(f"{titulo} de {no_terminal}")
+		print(f"---------| {titulo} de {no_terminal} |---------")
 		print(primeros)
 
 def imprimirConjuntoPred(conjunto):
-	print("Conjuntos de Prediccion: ")
+	print("-----| Conjuntos de Prediccion |-----")
 	for fila in conjunto:
 		print(fila)
 
